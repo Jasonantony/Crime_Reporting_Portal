@@ -1,0 +1,14 @@
+{
+    "builds": [
+        {
+            "src": "aap.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "aap.py"
+        }
+    ]
+}
