@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% block head %}{% endblock %}
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            border-radius: 4px;
+            padding: 20px;
+            position: relative;
+            background-color: rgb(52, 107, 226);
+            width: 95%;
+            max-width: 2400px;
+            margin: 15px auto;
+            border-radius: 12px;
+        }
+
+
+
+
+        .nav-item {
+            color: rgb(223, 80, 80);
+        }
+
+        .nav-item:hover {
+            color: rgb(0, 0, 0);
+            text-decoration: underline;
+            text-decoration-thickness: 3px;
+            padding-bottom: 2px;
+        }
+
+        .navbar-brand {
+            color: #000000;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.1);
+            color: #000000;
+        }
+
+        li:hover {
+            transform: scale(1.1);
+        }
+
+
+        .nav-link {
+            color: rgb(238, 233, 233)
+        }
+
+
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- //navbar templates -->
+    <nav class="navbar navbar-expand-lg  ">
+        <div class="container-fluid">
+
+            <img src="{{ url_for('static', filename='assets/logo.jpg') }}" alt="..."
+                style="width: 40px; height: 40px; margin-right: 5px;">
+            <a class="navbar-brand" href="#">Crime Reporting Portal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/report">Report</a>
+                    </li>
+
+                    {% if current_user.is_authenticated %}
+                    {% if session.email == 'admin@crb.com' %}
+                    <li><a class="nav-link" href="{{ url_for('dashboard_admin') }}">Admin Dashboard</a></li>
+                    {% else %}
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    {% endif %}
+                    <li><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                    <li><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+
+                    {% endif %}
+                    </li>
+
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    {% block body %}{% endblock %}
+
+    <footer class="text-center mt-5">
+
+
+        <p>&copy; 2024 Crime Reporting Portal. All rights reserved.</p>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</body>
+
+</html>

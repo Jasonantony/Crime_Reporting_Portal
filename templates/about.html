@@ -1,0 +1,129 @@
+{% extends "base.html"%}
+
+{% block head %}
+<style>
+    body {
+        background-color: #f9f9f9;
+        color: #333;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .official {
+        padding: 50px 0;
+    }
+
+    .official img {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .official .quote {
+        font-style: italic;
+        color: #555;
+    }
+
+    .case-box {
+        background: #fff;
+        padding: 20px;
+        margin: 10px;
+        border-left: 5px solid #007bff;
+        border-radius: 8px;
+    }
+
+    .carousel-item blockquote {
+        font-style: italic;
+        background: #f1f1f1;
+        padding: 20px;
+        border-left: 5px solid #007bff;
+        border-radius: 5px;
+    }
+
+    .carousel-inner {
+        min-height: 200px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center mb-5">Tamil Nadu Police — Key Officials</h1>
+
+    <!-- Zigzag Officials -->
+    <div class="row official align-items-center">
+        <div class="col-md-6 photo"><img src="{{ url_for('static',filename='assets/Shankar_Jiwal.JPG') }}"
+                alt="DGP Shankar Jiwal" class="img-fluid"></div>
+        <div class="col-md-6">
+            <h3>DGP Shankar Jiwal, IPS</h3>
+            <p class="quote">“By introducing new technologies, we will enhance law & order further.”</p>
+            <p>Appointed Director General of Police in June 2023 after a distinguished career across Intelligence,
+                Internal Security, and modern surveillance operations.</p>
+        </div>
+    </div>
+
+    <div class="row official align-items-center flex-md-row-reverse">
+        <div class="col-md-6 photo"><img src="{{ url_for('static',filename='assets/Sandeep.jpeg') }}" alt="DGP Training"
+                class="img-fluid"></div>
+        <div class="col-md-6">
+            <h3>ADGP (Training) Sandeep Rai Rathore, IPS</h3>
+            <p class="quote">“We are focused on improving welfare and operational readiness of all personnel.”</p>
+            <p>As Chennai Police Commissioner and heading training initiatives, he played a key role in establishing
+                integrated command centres and disaster-response protocols.</p>
+        </div>
+    </div>
+
+    <div class="row official align-items-center">
+        <div class="col-md-6 photo"><img src="{{ url_for('static',filename='assets/sandeep_mittal.jpg') }}"
+                alt="ADGP Cyber Crime" class="img-fluid"></div>
+        <div class="col-md-6">
+            <h3>ADGP Cyber Crime Wing,Dr. Sandeep Mittal, IPS</h3>
+            <p class="quote">“Coordinated global crackdowns are essential to keep cyber fraud under control.”</p>
+            <p>Leading the Cyber Crime Wing, he spearheaded operations to dismantle international scam networks and
+                significantly reduced digital-arrest cases in 2025.</p>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <!-- Solved Cases -->
+    <h2 class="text-center mb-4">Highlighted Solved Cases</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="case-box">
+                <h5>Operation ‘Kidney Racket Bust’</h5>
+                <p>TN CB‑CID cracked a trafficking ring involved in illicit kidney transplants—arresting 12 operatives
+                    linked to a private medical racket.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="case-box">
+                <h5>Cyber Fraud Phishing Network</h5>
+                <p>The Cyber Crime Cell identified a phishing gang stealing OTPs from 300+ victims via fake bank links
+                    and neutralized their infrastructure.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <!-- Testimonials -->
+    <h2 class="text-center mb-4">What Citizens Say</h2>
+    <div id="testiCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for testi in testimonials %}
+            <div class="carousel-item {{ 'active' if loop.first }}">
+                <blockquote>{{ testi }}</blockquote>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testiCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testiCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{%endblock%}

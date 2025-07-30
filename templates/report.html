@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f8f9fa;
+        padding: 20px;
+    }
+
+    form,
+    .report-summary {
+        max-width: 750px;
+        margin: auto;
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 15px;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    button[type="submit"],
+    button[type="button"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        font-size: 16px;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    ul {
+        padding-left: 20px;
+        list-style-type: disc;
+        margin-top: 10px;
+    }
+
+    .info-box {
+        background-color: #f1f1f1;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 10px;
+    }
+
+    /* report print block */
+    @media print {
+        button {
+            display: none !important;
+        }
+
+        body {
+            background: white;
+        }
+
+        .report-summary {
+            box-shadow: none;
+            padding: 0;
+        }
+
+        #printableArea {
+            font-family: "Times New Roman", serif;
+            font-size: 16px;
+            padding: 40px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #003366;
+        }
+
+        .info-box {
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            padding: 10px;
+        }
+
+        ul {
+            list-style: square;
+            padding-left: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<form id="reportForm" action="/submit_report" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+    <h2>Crime/Incident Report Form</h2>
+
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="contact">Contact Info</label>
+    <input type="text" id="contact" name="contact" required>
+
+    <label for="incidentType">Type of Incident</label>
+    <select id="incidentType" name="incidentType" required>
+        <option value="">-- Select --</option>
+        <option>Theft</option>
+        <option>Assault</option>
+        <option>Drug Activity</option>
+        <option>Land Dispute</option>
+        <option>Cyber Crime</option>
+        <option>Domestic Violence</option>
+        <option>Public Disturbance</option>
+        <option>Missing Person</option>
+        <option>Fraud</option>
+        <option>Other</option>
+    </select>
+
+    <label for="incidentDate">Date of Incident</label>
+    <input type="date" id="incidentDate" name="incidentDate" required>
+
+    <label for="incidentTime">Time of Incident</label>
+    <input type="time" id="incidentTime" name="incidentTime" required>
+
+    <label for="region">Region (Salem only)</label>
+    <select id="region" onchange="updateStation()" name="region" required>
+        <option value="">-- Select Region --</option>
+        <option value="Ammapet">Ammapet</option>
+        <option value="Hasthampatti">Hasthampatti</option>
+        <option value="Suramangalam">Suramangalam</option>
+        <option value="Fairlands">Fairlands</option>
+        <option value="Shevapet">Shevapet</option>
+        <option value="Annadanapatti">Annadanapatti</option>
+        <option value="Yercaud">Yercaud</option>
+    </select>
+
+    <label>Police Station</label>
+    <input type="text" id="station" name="station" readonly>
+
+    <div class="info-box" id="officerInfo"></div>
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description" rows="4" placeholder="Explain what happened..." required></textarea>
+
+    <label for="evidenceOption">Do you have evidence?</label>
+    <select id="evidenceOption" name="evidenceOption" onchange="toggleUploadField()">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+    </select>
+
+    <div id="uploadSection" class="hidden">
+        <label for="evidenceFile">Upload Evidence</label>
+        <input type="file" id="evidenceFile" name="evidenceFile">
+        <button type="button" onclick="uploadFile()">Upload File</button>
+        <ul id="uploadedFiles"></ul>
+    </div>
+
+
+    <button type="submit" onclick="submitReportPreview()">Submit Report</button>
+
+</form>
+
+<!-- Summary Output -->
+<div id="reportSummary" class="report-summary hidden">
+    <div id="printableArea">
+        <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+            <img src=" {{ url_for('static', filename='assets/logo.jpg') }}" alt="Government Logo" style="width: 80px;">
+            <h1 style="margin: 10px 0 0; color: #003366;">Tamil Nadu Police Department</h1>
+            <h3 style="margin: 5px 0; font-weight: normal;">Crime and Safety Division, Salem District</h3>
+            <p style="font-style: italic;">"To Serve and Protect"</p>
+        </div>
+
+        <div id="summaryContent"></div>
+
+        <div style="margin-top: 60px; text-align: center; font-size: 14px; color: #666;">
+            <p><strong>Salem District Police Headquarters</strong></p>
+            <p>Old Bus Stand Road, Near Collector Office, Salem - 636001</p>
+            <p>Phone: 0427-2440001 | Email: salempolice@tn.gov.in</p>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="printReport()">🖨️ Print Report</button>
+    </div>
+</div>
+
+<script>
+    function printReport() {
+        const printContents = document.getElementById("printableArea").innerHTML;
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload();
+    }
+
+    const policeData = {
+        "Ammapet": {
+            station: "Ammapet Police Station",
+            inspector: "Inspector R. Kumar",
+            contact: "9443123456",
+            address: "Near Government Hospital, Ammapet, Salem"
+        },
+        "Hasthampatti": {
+            station: "Hasthampatti Police Station",
+            inspector: "Inspector S. Devi",
+            contact: "9443567890",
+            address: "Opp. Salem Corporation Office, Hasthampatti, Salem"
+        },
+        "Suramangalam": {
+            station: "Suramangalam Police Station",
+            inspector: "Inspector V. Prakash",
+            contact: "9443765432",
+            address: "Salem Main Road, Suramangalam, Salem"
+        },
+        "Fairlands": {
+            station: "Fairlands Police Station",
+            inspector: "Inspector L. Suresh",
+            contact: "9443987654",
+            address: "Court Road, Fairlands, Salem"
+        },
+        "Shevapet": {
+            station: "Shevapet Police Station",
+            inspector: "Inspector B. Anitha",
+            contact: "9443567123",
+            address: "Bazaar Street, Shevapet, Salem"
+        },
+        "Annadanapatti": {
+            station: "Annadanapatti Police Station",
+            inspector: "Inspector G. Rajesh",
+            contact: "9443124987",
+            address: "Near Railway Gate, Annadanapatti, Salem"
+        },
+        "Yercaud": {
+            station: "Yercaud Police Station",
+            inspector: "Inspector N. Meena",
+            contact: "9443876543",
+            address: "Hill Station Road, Yercaud, Salem"
+        }
+    };
+
+    window.onload = function () {
+        const now = new Date();
+        document.getElementById("incidentDate").value = now.toISOString().slice(0, 10);
+        document.getElementById("incidentTime").value = now.toTimeString().slice(0, 5);
+    };
+
+    function updateStation() {
+        const region = document.getElementById("region").value;
+        const info = policeData[region];
+        document.getElementById("station").value = info ? info.station : "";
+        document.getElementById("officerInfo").innerHTML = info
+            ? `<b>Inspector:</b> ${info.inspector}<br><b>Phone:</b> ${info.contact}<br><b>Address:</b> ${info.address}`
+            : "";
+    }
+
+    function toggleUploadField() {
+        document.getElementById("uploadSection").classList.toggle(
+            "hidden",
+            document.getElementById("evidenceOption").value !== "Yes"
+        );
+    }
+
+    function uploadFile() {
+        const input = document.getElementById("evidenceFile");
+        const file = input.files[0];
+        if (!file) return alert("Please select a file.");
+        const list = document.getElementById("uploadedFiles");
+        const li = document.createElement("li");
+        li.textContent = file.name;
+        list.appendChild(li);
+        input.value = "";
+    }
+
+    function submitReport(e) {
+        e.preventDefault();
+        const getVal = id => document.getElementById(id).value;
+        const region = getVal("region");
+        const officer = policeData[region];
+
+        const fileElements = Array.from(document.querySelectorAll("#uploadedFiles li"));
+        const files = fileElements.map(li => li.textContent).join(", ");
+
+        let evidenceHTML = '';
+        if (fileElements.length > 0) {
+            evidenceHTML = `
+                <div style="page-break-before: always;">
+                    <h2 style="text-align: center; color: #003366;">Submitted Evidence</h2>
+                    <ul>
+                        ${fileElements.map(li => `<li>${li.textContent}</li>`).join('')}
+                    </ul>
+                    <p style="margin-top: 30px;">All evidence listed here has been submitted by the complainant. Originals or further verification may be requested by the investigating officer.</p>
+                </div>
+            `;
+
+
+
+        }
+
+        const summary = `
+            <p><strong>Name:</strong> ${getVal("name")}</p>
+            <p><strong>Contact:</strong> ${getVal("contact")}</p>
+            <p><strong>Type of Incident:</strong> ${getVal("incidentType")}</p>
+            <p><strong>Date & Time:</strong> ${getVal("incidentDate")} at ${getVal("incidentTime")}</p>
+            <p><strong>Region:</strong> ${region}</p>
+            <p><strong>Police Station:</strong> ${getVal("station")}</p>
+            <p><strong>Description:</strong> ${getVal("description")}</p>
+
+            <h3>Assigned Officer Details</h3>
+            <p><strong>Inspector:</strong> ${officer.inspector}</p>
+            <p><strong>Phone:</strong> ${officer.contact}</p>
+            <p><strong>Station Address:</strong> ${officer.address}</p>
+        `;
+
+        document.getElementById("summaryContent").innerHTML = summary + evidenceHTML;
+        document.getElementById("reportForm").classList.add("hidden");
+        document.getElementById("reportSummary").classList.remove("hidden");
+
+
+
+    }
+</script>
+{% endblock %}

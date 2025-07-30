@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #eaf2fb;
+        padding: 0;
+        margin: 0;
+    }
+
+    h1,
+    h2 {
+        color: #003366;
+        font-weight: bold;
+    }
+
+
+
+    /* Carousel */
+    .carousel {
+        width: 95%;
+        max-width: 1100px;
+        margin: 30px auto;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .carousel-inner img {
+        height: 480px;
+        object-fit: cover;
+    }
+
+    /* Cards */
+    .card {
+        width: 100%;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+    .card img {
+        border-radius: 15px 15px 0 0;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #1a1a1a;
+    }
+
+    .card-text {
+        font-size: 0.95rem;
+        color: #333;
+    }
+
+    /* Helpline Ticker */
+    .helpline-ticker {
+        background: linear-gradient(90deg, #003366, #0059b3);
+        padding: 12px 0;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        width: 95%;
+        margin: 30px auto;
+        color: #fff;
+    }
+
+    .ticker-container {
+        white-space: nowrap;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .ticker-content {
+        display: inline-block;
+        padding-left: 100%;
+        animation: scroll-left 25s linear infinite;
+        font-size: 1.15rem;
+        font-weight: 600;
+    }
+
+    .ticker-container:hover .ticker-content {
+        animation-play-state: paused;
+    }
+
+    @keyframes scroll-left {
+        0% {
+            transform: translateX(0%);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    /* Contact Section */
+    #contacts {
+        background-color: #f0f0f0;
+        padding: 30px 10px;
+        border-top: 4px solid #003366;
+    }
+
+    #cc {
+        background: #ffffff;
+        padding: 20px;
+        margin: 10px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+        .carousel-inner img {
+            height: 300px;
+        }
+
+        .card img {
+            height: 180px;
+        }
+
+        .ticker-content {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .card-title {
+            font-size: 1rem;
+        }
+
+        .card-text {
+            font-size: 0.85rem;
+        }
+    }
+
+    /* bargraph */
+
+
+
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f9fafb;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .outer-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .chart-box {
+        width: 90%;
+        max-width: 900px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<h1 class="text-center my-4">Welcome to the Crime Reporting Portal</h1>
+
+<!-- Carousel Section -->
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{{ url_for('static', filename='assets/crimescene.jpg') }}" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/cr2.jpg') }}" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/cr3.jpg') }}" class="d-block w-100" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Recent Crimes Section -->
+<h2 class="text-center my-4">Recent Crimes</h2>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <!-- Card 1 -->
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{url_for('static', filename='assets/kidney.jpg')}}" alt="Kidney Racket">
+                <div class="card-body">
+                    <h5 class="card-title">Illegal Kidney Sales Racket (Namakkal)</h5>
+                    <p class="card-text">Complaint against broker M. Anandan for coercing labourers into selling kidneys
+                        in Pallipalayam. He's absconding. Probe ongoing.</p>
+                    <a href="https://timesofindia.indiatimes.com/city/coimbatore/illegal-kidney-sales-racket-in-namakkal-police-complaint-filed-against-broker/articleshow/122671573.cms?utm_source=chatgpt.com"
+                        class="btn btn-primary" target="_blank">More Info</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{url_for('static', filename='assets/pocso.png')}}" alt="POCSO Abuse">
+                <div class="card-body">
+                    <h5 class="card-title">POCSO Abuse at Children’s Home (Chennai)</h5>
+                    <p class="card-text">Driver arrested for sexually abusing 18 girls aged 13–17. Management also
+                        booked for complicity.</p>
+                    <a href="https://timesofindia.indiatimes.com/city/chennai/driver-sexually-exploits-18-girls-at-govt-recognised-home-held/articleshow/122409083.cms?utm_source=chatgpt.com"
+                        class="btn btn-primary" target="_blank">More Info</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{url_for('static', filename='assets/ajith.png')}}" alt="Custodial Death">
+                <div class="card-body">
+                    <h5 class="card-title">Custodial Death of Ajith Kumar (Sivaganga)</h5>
+                    <p class="card-text">5 TN cops arrested over temple guard's death. Injuries confirmed. Murder
+                        charges filed. CBI to probe. Judicial custody ordered.</p>
+                    <a href="https://www.indiatoday.in/amp/india/tamil-nadu/story/judicial-custody-for-five-tamil-nadu-cops-over-sivagangai-temple-guard-ajith-kumar-custodial-death-2748816-2025-07-01?utm_source=chatgpt.com"
+                        class="btn btn-primary" target="_blank">More Info</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Helpline Carousel -->
+<div class="helpline-ticker">
+    <div class="ticker-container">
+        <div class="ticker-content">
+            📞 <strong>Police:</strong> 100 &nbsp;&nbsp;|&nbsp;&nbsp;
+            🚑 <strong>Ambulance:</strong> 108 &nbsp;&nbsp;|&nbsp;&nbsp;
+            🔥 <strong>Fire:</strong> 101 &nbsp;&nbsp;|&nbsp;&nbsp;
+            👩‍⚕️ <strong>Women Helpline:</strong> 1091 &nbsp;&nbsp;|&nbsp;&nbsp;
+            👧 <strong>Child Helpline:</strong> 1098 &nbsp;&nbsp;|&nbsp;&nbsp;
+            🧠 <strong>Mental Health:</strong> 08046110007 &nbsp;&nbsp;|&nbsp;&nbsp;
+            💻 <strong>Cyber Crime:</strong> 1930 &nbsp;&nbsp;|&nbsp;&nbsp;
+            🌪️ <strong>Disaster Management:</strong> 1078 &nbsp;&nbsp;|&nbsp;&nbsp;
+            🛡️ <strong>National Emergency:</strong> 112
+        </div>
+    </div>
+</div>
+
+<!-- bar graph section -->
+<h2>Crime Rate vs Solved Cases (Horizontal)</h2>
+<div class="outer-container">
+    <div class="chart-box">
+        <canvas id="crimeChart"></canvas>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('crimeChart').getContext('2d');
+
+    const data = {
+        labels: ['Chennai', 'Mumbai', 'Delhi', 'Kolkata', 'Bangalore'],
+        datasets: [
+            {
+                label: 'Crime Rate',
+                data: [120, 180, 200, 140, 170],
+                backgroundColor: '#ef4444'
+            },
+            {
+                label: 'Solved Cases',
+                data: [90, 150, 160, 100, 140],
+                backgroundColor: '#10b981'
+            }
+        ]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: 'Crime vs Solved Cases by City'
+                }
+            },
+            animation: {
+                duration: 1000,
+                easing: 'easeOutBounce'
+            },
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    new Chart(ctx, config);
+</script>
+
+
+
+<!-- Contact Section -->
+<h2 class="text-center my-4">Major Contacts</h2>
+<div class="container-fluid" id="contacts">
+    <div class="row justify-content-center">
+        <div class="col-md-4" id="cc">
+            <h4>South Range (Salem Town)</h4>
+            <h5>Inspector of Police, Salem Town PS</h5>
+            <address><strong>Address:</strong> D.No. 426/44, Big Bazaar St, Salem – 636001</address>
+        </div>
+        <div class="col-md-4" id="cc">
+            <h4>North Range (Hasthampatti)</h4>
+            <h5>Inspector of Police, Hasthampatty PS</h5>
+            <address><strong>Address:</strong> D.No. 1/1, Kallikadu, Kannankurichi Main Rd, Salem – 636007</address>
+        </div>
+        <div class="col-md-4" id="cc">
+            <h4>West Range (Suramangalam)</h4>
+            <h5>Inspector of Police, Sooramangalam PS</h5>
+            <address><strong>Address:</strong> PS D.No. 1/1, Junction Main Rd, Suramangalam, Salem – 636005</address>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
