@@ -136,6 +136,7 @@ pytesseract==0.3.13
 python-3.11.9
 Flask
 pymysql
+gunicorn
 python-dateutil==2.9.0.post0
 python-magic==0.4.27
 python-slugify==8.0.4
