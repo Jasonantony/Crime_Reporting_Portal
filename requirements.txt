@@ -133,6 +133,9 @@ pypiwin32==223
 PyRect==0.2.0
 PyScreeze==1.0.1
 pytesseract==0.3.13
+python-3.11.9
+Flask
+pymysql
 python-dateutil==2.9.0.post0
 python-magic==0.4.27
 python-slugify==8.0.4
