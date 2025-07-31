@@ -19,9 +19,9 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB limit
 
 
 conn = mariadb.connect(
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    host=os.getenv("DB_HOST"),
+    user=os.getenv("dbpbf40971859"),
+    password=os.getenv("9Vt,9yN|vbSx74f7T{HGS"),
+    host=os.getenv("serverless-eastus.sysp0000.db3.skysql.com"),
     port=3306,
     database=os.getenv("DB_NAME"),
     ssl_ca="/etc/ssl/certs/ca-certificates.crt"
