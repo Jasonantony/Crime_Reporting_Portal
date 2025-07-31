@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 import os
+import mariadb
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import mysql.connector
@@ -11,21 +12,21 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 # upload configure
 
 # Initialize Flask app
-
-
 app=Flask(__name__)
 app.secret_key = 'Melrin@joyce'  # Use a strong random key in production
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB limit
 
-# database configuration
-# MySQL config
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Merlin@09'
-app.config['MYSQL_DB'] = 'user_portal'
 
-mysql = MySQL(app)
+conn = mariadb.connect(
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST"),
+    port=3306,
+    database=os.getenv("DB_NAME"),
+    ssl_ca="/etc/ssl/certs/ca-certificates.crt"
+)
+cursor = conn.cursor()
 bcrypt = Bcrypt(app)
 # Flask-Login setup
 login_manager = LoginManager()
