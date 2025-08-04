@@ -1,6 +1,4 @@
 from flask import Flask, render_template, request, redirect, session, url_for, flash
-import os
-import mariadb
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import mysql.connector
